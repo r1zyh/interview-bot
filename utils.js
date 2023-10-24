@@ -25,6 +25,7 @@ const getRandomQuestion = (topic) => {
 };
 
 const getCorrectAnswer = (topic, id) => {
+
   const question = questions[topic].find((question) => question.id === id);
 
   if (!question.hasOptions) {

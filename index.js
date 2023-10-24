@@ -22,9 +22,8 @@ bot.command("start", async (ctx) => {
     .text("Случайный вопрос")
     .resized();
   await ctx.reply(
-    "Привет! Я - Frontend Interview Prep Bot 🤖 \n Я помогу тебе подготовиться к интервью по фронтенду."
+    "Привет! Я - Frontend Interview Prep Bot 🤖 \nЯ помогу тебе подготовиться к интервью по фронтенду"
   );
-
   await ctx.reply("С чего начнем? Выбери тему вопроса в меню 👇", {
     reply_markup: startKeyboard,
   });
@@ -35,6 +34,7 @@ bot.hears(
   async (ctx) => {
     const topic = ctx.message.text.toLowerCase();
     const { question, questionTopic } = getRandomQuestion(topic);
+
     let inlineKeyboard;
 
     if (question.hasOptions) {
@@ -42,12 +42,13 @@ bot.hears(
         InlineKeyboard.text(
           option.text,
           JSON.stringify({
-            type: `${questionTopic} - option`,
+            type: `${questionTopic}-option`,
             isCorrect: option.isCorrect,
             questionId: question.id,
           })
         ),
       ]);
+
       inlineKeyboard = InlineKeyboard.from(buttonRows);
     } else {
       inlineKeyboard = new InlineKeyboard().text(
@@ -67,6 +68,7 @@ bot.hears(
 
 bot.on("callback_query:data", async (ctx) => {
   const callbackData = JSON.parse(ctx.callbackQuery.data);
+
   if (!callbackData.type.includes("option")) {
     const answer = getCorrectAnswer(callbackData.type, callbackData.questionId);
     await ctx.reply(answer, {
